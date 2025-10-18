@@ -58,7 +58,7 @@ def create_category(request):
        if category_model_form.is_valid():
             category_model_form.save()
             messages.success(request,'Category Created Successfully')
-            # return redirect('view_category')
+            return redirect('organizer_dashboard') # ekhane organizer_dashboard url name (kothay  redirect korte chai)
     context={"category_form":category_model_form}
     return render(request,'categories/categorie_form.html',context)
 
@@ -77,7 +77,7 @@ def update_category(request,id):
         if category_model_form.is_valid():
             category_model_form.save()
             messages.success(request,'Category Updated Successfully')
-            # return redirect('view_category')
+            return redirect('organizer_dashboard')
     context={"category_form":category_model_form}
     return render(request,'categories/categorie_form.html',context)
 
@@ -86,7 +86,7 @@ def delete_category(request,id):
         category = Category.objects.get(id=id)
         category.delete()
         messages.success(request,"Category deleted successfully")
-    # return redirect('view_category')
+    return redirect('organizer_dashboard')
 
 
 
@@ -99,7 +99,7 @@ def create_event(request):
        if event_model_form.is_valid():
             event_model_form.save()
             messages.success(request,'Event Created Successfully')
-            # return redirect('view_event')
+            return redirect('organizer_dashboard')
     context={"event_form":event_model_form}
     return render(request,"events/event_form.html",context)
 
@@ -118,7 +118,7 @@ def update_event(request,id):
         if event_model_form.is_valid():
             event_model_form.save()
             messages.success(request,'Event Updated Successfully')
-            # return redirect('view_event')
+            return redirect('organizer_dashboard')
     context={"event_form":event_model_form}
     return render(request,"events/event_form.html",context)
 
@@ -127,7 +127,7 @@ def delete_event(request,id):
         event = Event.objects.get(id=id)
         event.delete()
         messages.success(request,"Event deleted successfully")
-    # return redirect('view_event')
+    return redirect('organizer_dashboard')
     
     
     
@@ -140,7 +140,7 @@ def create_participant(request):
        if participant_model_form.is_valid():
             participant_model_form.save()
             messages.success(request,'Participant Created Successfully')
-            # return redirect('view_event')
+            return redirect('organizer_dashboard')
     context={"Participant_form":participant_model_form}
     return render(request,"participants/participant_form.html",context)
 
@@ -159,7 +159,7 @@ def update_participant(request,id):
         if participant_model_form.is_valid():
             participant_model_form.save()
             messages.success(request,'Participant Updated Successfully')
-            # return redirect('view_event')
+            return redirect('organizer_dashboard')
     context={"Participant_form":participant_model_form}
     return render(request,"participants/participant_form.html",context)
 
@@ -168,4 +168,4 @@ def delete_participant(request,id):
         participant = Participant.objects.get(id=id)
         participant.delete()
         messages.success(request,"Participant deleted successfully")
-    # return redirect('view_event')
+    return redirect('organizer_dashboard')

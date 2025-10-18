@@ -1,126 +1,120 @@
-{% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Organizer Dashboard</title>
-  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <title>Organizer Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
+<body class="bg-gray-100 p-6">
 
-<body class="bg-gray-100 min-h-screen p-6">
-  <div class="max-w-6xl mx-auto bg-white rounded-xl shadow-md p-6">
     <h1 class="text-3xl font-bold mb-6 text-center">Organizer Dashboard</h1>
 
-
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-      <div class="bg-blue-100 text-blue-800 p-4 rounded-xl cursor-pointer" onclick="window.location.href='?filter=all'">
-        <h2 class="text-lg font-semibold">Total Events</h2>
-        <p class="text-3xl font-bold">{{ total_events }}</p>
-      </div>
-
-      <div class="bg-green-100 text-green-800 p-4 rounded-xl cursor-pointer" onclick="window.location.href='?filter=upcoming'">
-        <h2 class="text-lg font-semibold">Upcoming Events</h2>
-        <p class="text-3xl font-bold">{{ upcoming_events }}</p>
-      </div>
-
-      <div class="bg-red-100 text-red-800 p-4 rounded-xl cursor-pointer" onclick="window.location.href='?filter=past'">
-        <h2 class="text-lg font-semibold">Past Events</h2>
-        <p class="text-3xl font-bold">{{ past_events }}</p>
-      </div>
-
-      <div class="bg-yellow-100 text-yellow-800 p-4 rounded-xl">
-        <h2 class="text-lg font-semibold">Total Participants</h2>
-        <p class="text-3xl font-bold">{{ total_participants }}</p>
-      </div>
+    <!-- Stats Grid -->
+    <div class="grid grid-cols-4 gap-4 text-center mb-8">
+        <div class="bg-white shadow p-4 rounded">
+            <h2 class="text-xl font-bold">Participants</h2>
+            <p class="text-2xl">{{ total_participants }}</p>
+        </div>
+        <div class="bg-white shadow p-4 rounded">
+            <h2 class="text-xl font-bold">Events</h2>
+            <p class="text-2xl">{{ total_events }}</p>
+        </div>
+        <div class="bg-white shadow p-4 rounded">
+            <h2 class="text-xl font-bold">Upcoming</h2>
+            <p class="text-2xl">{{ upcoming_events }}</p>
+        </div>
+        <div class="bg-white shadow p-4 rounded">
+            <h2 class="text-xl font-bold">Past</h2>
+            <p class="text-2xl">{{ past_events }}</p>
+        </div>
     </div>
 
-    <h2 class="text-2xl font-semibold mb-4">
-      {% if filter_type == 'upcoming' %}
-      Upcoming Events
-      {% elif filter_type == 'past' %}
-      Past Events
-      {% elif filter_type == 'all' %}
-      All Events
-      {% else %}
-      Today’s Events
-      {% endif %}
-    </h2>
-
-    <div class="overflow-x-auto mb-10">
-      <table class="w-full border-collapse border border-gray-300">
-        <thead class="bg-gray-200">
-          <tr>
-            <th class="border px-4 py-2">Name</th>
-            <th class="border px-4 py-2">Date</th>
-            <th class="border px-4 py-2">Time</th>
-            <th class="border px-4 py-2">Category</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for event in filtered_events %}
-          <tr class="hover:bg-gray-50">
-            <td class="border px-4 py-2">{{ event.name }}</td>
-            <td class="border px-4 py-2">{{ event.date }}</td>
-            <td class="border px-4 py-2">{{ event.time }}</td>
-            <td class="border px-4 py-2">{{ event.category.name }}</td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+    <!-- Event Filters -->
+    <div class="mb-4 text-center">
+        <a href="?filter=today" class="px-3 py-1 bg-gray-300 rounded">Today</a>
+        <a href="?filter=upcoming" class="px-3 py-1 bg-green-300 rounded">Upcoming</a>
+        <a href="?filter=past" class="px-3 py-1 bg-red-300 rounded">Past</a>
+        <a href="?filter=all" class="px-3 py-1 bg-blue-300 rounded">All</a>
     </div>
 
-
-    <h2 class="text-2xl font-semibold mb-4">Categories</h2>
-    <div class="overflow-x-auto mb-10">
-      <table class="w-full border-collapse border border-gray-300">
-        <thead class="bg-gray-200">
-          <tr>
-            <th class="border px-4 py-2">ID</th>
-            <th class="border px-4 py-2">Name</th>
-            <th class="border px-4 py-2">Description</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for category in categories %}
-          <tr class="hover:bg-gray-50">
-            <td class="border px-4 py-2">{{ category.id }}</td>
-            <td class="border px-4 py-2">{{ category.name }}</td>
-            <td class="border px-4 py-2">{{ category.description }}</td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+    <!-- Date Range Filter -->
+    <div class="bg-white p-4 rounded shadow mb-6 text-center">
+        <form method="GET" action="">
+            <label class="font-semibold">Filter by Date:</label>
+            <input type="date" name="start_date" value="{{ request.GET.start_date }}" class="border rounded px-2 py-1">
+            <input type="date" name="end_date" value="{{ request.GET.end_date }}" class="border rounded px-2 py-1">
+            <button type="submit" class="bg-blue-600 text-white px-3 py-1 rounded">Apply</button>
+        </form>
     </div>
 
-
-    <h2 class="text-2xl font-semibold mb-4">Participants</h2>
-    <div class="overflow-x-auto">
-      <table class="w-full border-collapse border border-gray-300">
-        <thead class="bg-gray-200">
-          <tr>
-            <th class="border px-4 py-2">ID</th>
-            <th class="border px-4 py-2">Name</th>
-            <th class="border px-4 py-2">Email</th>
-            <th class="border px-4 py-2">Registered Events</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for participant in participants %}
-          <tr class="hover:bg-gray-50">
-            <td class="border px-4 py-2">{{ participant.id }}</td>
-            <td class="border px-4 py-2">{{ participant.name }}</td>
-            <td class="border px-4 py-2">{{ participant.email }}</td>
-            <td class="border px-4 py-2">
-              {% for ev in participant.events.all %}
-                <span class="inline-block px-2 py-1 rounded text-sm">{{ ev.name }}</span>
-              {% endfor %}
-            </td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+    <!-- Filtered Event List -->
+    <div class="bg-white p-4 rounded shadow mb-6">
+        <div class="flex justify-between items-center">
+            <h2 class="text-2xl font-semibold">Events ({{ filter_type|title }})</h2>
+            <a href="{% url 'create_event' %}" class="bg-blue-600 text-white px-3 py-1 rounded">+ Add Event</a>
+        </div>
+        <ul>
+            {% for event in filtered_events %}
+                <li class="border-b py-2 flex justify-between">
+                    <div>
+                        <strong>{{ event.name }}</strong> — {{ event.category.name }} — {{ event.date }}
+                    </div>
+                    <div>
+                        <a href="{% url 'update_event' event.id %}" class="text-blue-500 mr-2">Edit</a>
+                        <form action="{% url 'delete_event' event.id %}" method="POST" class="inline">
+                            {% csrf_token %}
+                            <button type="submit" class="text-red-500">Delete</button>
+                        </form>
+                    </div>
+                </li>
+            {% empty %}
+                <p>No events found.</p>
+            {% endfor %}
+        </ul>
     </div>
-  </div>
+
+    <!-- Categories Section -->
+    <div class="bg-white p-4 rounded shadow mb-6">
+        <div class="flex justify-between items-center">
+            <h2 class="text-2xl font-semibold">Categories</h2>
+            <a href="{% url 'create_category' %}" class="bg-blue-600 text-white px-3 py-1 rounded">+ Add</a>
+        </div>
+        <ul>
+            {% for c in categories %}
+                <li class="border-b py-2 flex justify-between">
+                    {{ c.name }}
+                    <div>
+                        <a href="{% url 'update_category' c.id %}" class="text-blue-500 mr-2">Edit</a>
+                        <form action="{% url 'delete_category' c.id %}" method="POST" class="inline">
+                            {% csrf_token %}
+                            <button type="submit" class="text-red-500">Delete</button>
+                        </form>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- Participants Section -->
+    <div class="bg-white p-4 rounded shadow">
+        <div class="flex justify-between items-center">
+            <h2 class="text-2xl font-semibold">Participants</h2>
+            <a href="{% url 'create_participant' %}" class="bg-blue-600 text-white px-3 py-1 rounded">+ Add</a>
+        </div>
+        <ul>
+            {% for p in participants %}
+                <li class="border-b py-2 flex justify-between">
+                    {{ p.name }} — {{ p.email }}
+                    <div>
+                        <a href="{% url 'update_participant' p.id %}" class="text-blue-500 mr-2">Edit</a>
+                        <form action="{% url 'delete_participant' p.id %}" method="POST" class="inline">
+                            {% csrf_token %}
+                            <button type="submit" class="text-red-500">Delete</button>
+                        </form>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
 </body>
 </html>
