@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
-import dj_database_url 
+import dj_database_url
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -81,7 +81,7 @@ WSGI_APPLICATION = 'EMS.wsgi.application'
 #         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
-'''for pg'''
+# '''for pg'''
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql',
@@ -94,7 +94,6 @@ WSGI_APPLICATION = 'EMS.wsgi.application'
 # }
 DATABASES = {
     'default': dj_database_url.config(
-        # Replace this value with your local database's connection string.
         default='postgresql://ems_vmei_user:npHXpPWwFEhLimrgY5PfflVMozRnMww0@dpg-d3posoc9c44c73c7rqh0-a.oregon-postgres.render.com/ems_vmei',
         conn_max_age=600
     )
